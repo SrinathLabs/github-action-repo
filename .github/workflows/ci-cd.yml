@@ -12,6 +12,8 @@ jobs:
     outputs:
       image_tag: ${{ steps.build.outputs.image-tag }}
     steps:
+      - uses: actions/checkout@v4
+        name: Code checkout
       - name: Build and Push
         id: build
         uses: ./.github/actions/build-and-push
