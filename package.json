@@ -1,0 +1,11 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js Docker application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Sri",
+  "license": "MIT"
+}
