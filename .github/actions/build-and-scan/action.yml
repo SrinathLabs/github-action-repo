@@ -1,0 +1,42 @@
+# .github/actions/build-and-push/action.yml
+name: 'Build and Push Docker Image'
+description: 'Checks out code, computes short SHA, logs into GHCR, builds and pushes the image'
+
+inputs:
+  registry-token:
+    description: 'Token to authenticate with GHCR'
+    required: true
+  image-name:
+    description: 'Full image path, e.g. ghcr.io/org/repo'
+    required: true
+
+outputs:
+  image-tag:
+    description: 'The short SHA used as the image tag'
+    value: ${{ steps.vars.outputs.short_sha }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Set short SHA
+      id: vars
+      shell: bash
+      run: |
+        SHORT_SHA=${GITHUB_SHA:0:7}
+        echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+
+    - name: Log in to GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ inputs.registry-token }}
+
+    - name: Docker build and push
+      shell: bash
+      run: |
+        IMAGE=${{ inputs.image-name }}:${{ steps.vars.outputs.short_sha }}
+        docker build -t $IMAGE .
+        docker push $IMAGE

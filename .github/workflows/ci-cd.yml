@@ -1,0 +1,16 @@
+# .github/workflows/ci-cd.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_tag: ${{ steps.build.outputs.image-tag }}
+    steps:
+      - name: Build and Push
+        id: build
+        uses: ./.github/actions/build-and-push
+        with:
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ghcr.io/${{ github.repository }}
