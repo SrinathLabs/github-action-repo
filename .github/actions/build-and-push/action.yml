@@ -27,6 +27,7 @@ runs:
         SHORT_SHA=${GITHUB_SHA:0:7}
         echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
     - name: Prove GITHUB_OUTPUT exists
+      shell: bash
       run: echo "The output file path is $GITHUB_OUTPUT"
       
     - name: Log in to GHCR
