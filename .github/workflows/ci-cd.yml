@@ -16,7 +16,7 @@ jobs:
         name: Code checkout
       - name: Build and Push
         id: build
-        uses: ./.github/actions/build-and-push
+        uses: ./.github/actions/build-and-push  #here we are calling action.yml
         with:
           registry-token: ${{ secrets.GITHUB_TOKEN }}
           image-name: ghcr.io/${{ github.repository }}
